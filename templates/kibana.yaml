@@ -1,0 +1,21 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: {{ include "eck-stack.fullname" . }}-{{ .Values.kibana.service.name }}
+spec:
+  version: {{ .Values.kibana.version }}
+  count: 1
+  elasticsearchRef:
+    name: {{ include "eck-stack.fullname" . }}-{{ .Values.elasticsearch.service.name }}
+  http:
+    service:
+      spec:
+        type: NodePort
+        ports:
+        - name: http
+          protocol: TCP
+          port: {{ .Values.kibana.service.port }}
+          targetPort: {{ .Values.kibana.service.targetPort }}
+    tls:
+      selfSignedCertificate:
+        disabled: true

@@ -1,0 +1,63 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ include "eck-stack.fullname" . }}-{{ .Values.elasticsearch.service.name }}
+spec:
+  version: {{ .Values.elasticsearch.version }}
+  nodeSets:
+  - name: master
+    config:
+      # most Elasticsearch configuration parameters are possible to set, e.g: node.attr.attr_name: attr_value
+      node.roles: ["master", "remote_cluster_client"]
+      # this allows ES to run on nodes even if their vm.max_map_count has not been increased, at a performance cost
+      node.store.allow_mmap: true
+    podTemplate:
+      metadata:
+        labels:
+          purpose: logging
+      spec:
+        containers:
+        - name: elasticsearch
+          resources:
+            limits:
+              memory: "{{ .Values.elasticsearch.resources.limits.memory }}"
+              cpu: "{{ .Values.elasticsearch.resources.limits.cpu }}"
+    count: {{ .Values.elasticsearch.master.replicas }}
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data 
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ .Values.elasticsearch.master.volume.size }}"
+        storageClassName: "{{ .Values.elasticsearch.master.volume.storageClass }}"
+  - name: data
+    count: {{ .Values.elasticsearch.master.replicas }}
+    config:
+      node.roles: ["data", "ingest", "ml", "transform"]
+    podTemplate:
+      metadata:
+        labels:
+          purpose: logging
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data 
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ .Values.elasticsearch.data.volume.size }}"
+        storageClassName: "{{ .Values.elasticsearch.data.volume.storageClass }}"
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+        # # add a list of SANs into the self-signed HTTP certificate
+        # subjectAltNames:
+        # - dns: "elasticsearch-logging-es-http.{{ .Release.Namespace }}.svc.cluster.local"
+        # - dns: "elasticsearch-logging-es-http.{{ .Release.Namespace }}.svc"
+        # - dns: "*.{{ .Release.Namespace }}.svc"
+        # - dns: "*.{{ .Release.Namespace }}.svc.cluster.local"
