@@ -1,4 +1,4 @@
-# ECK stack Helm Chart*
+# ECK stack Helm Chart
 
 Requirements:
  1. Helm 3
