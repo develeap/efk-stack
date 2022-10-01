@@ -1,5 +1,9 @@
 *ECK stack Helm Chart*
 
+Requirements:
+ 1. Helm 3
+ 2. Kubernetes config file configured to the cluster
+
 For a fast & easy installation run:
  1. `cp install.sh ../`
  2. `cd ..`
