@@ -32,12 +32,13 @@ data:
             sleep 5
             echo "Waiting for readiness of kibana..."
         done
+        sleep 5
         echo "kibana ready"
 
         echo "Importing index..."
         OUTPUT=$(curl --insecure --user ${ELASTIC_USER}:${ELASTIC_PWD} -X POST ${KIBANA_PROTOCOL}://${KIBANA_URL}:${KIBANA_PORT}/api/saved_objects/_import -H "kbn-xsrf: true" --form file=@/kibana/index_pattern.ndjson)
         SUCCESS=$(echo ${OUTPUT} | grep -o '"successCount":1' | wc -l)
-            
+        echo ${OUTPUT}    
         if [[ ${SUCCESS} == "1" ]]; then
           printf "\n########## Imported index-pattern successfully! #############################\n"
         else
@@ -48,5 +49,4 @@ data:
 
     import_index
 
-  index_pattern.ndjson: |
-    {"attributes":{"fieldAttrs":"{}","fields":"[]","runtimeFieldMap":"{}","timeFieldName":"@timestamp","title":"logstash-*","typeMeta":"{}"},"coreMigrationVersion":"8.2.2","id":"683a2d10-08fb-11ed-8cae-2d280a9cf5cc","migrationVersion":{"index-pattern":"8.0.0"},"references":[],"type":"index-pattern","updated_at":"2022-07-21T13:45:39.686Z","version":"WzEwNDUsMV0="}
+  index_pattern.ndjson: {{ .Values.kibana.dashboard | toYaml }}
