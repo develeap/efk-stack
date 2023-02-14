@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "eck-stack.fullname" . }}-fluentd
+  name: {{ include "efk-stack.fullname" . }}-fluentd
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "eck-stack.fullname" . }}-fluentd
+  name: {{ include "efk-stack.fullname" . }}-fluentd
 rules:
 - apiGroups:
   - ""
@@ -24,12 +24,12 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ include "eck-stack.fullname" . }}-fluentd
+  name: {{ include "efk-stack.fullname" . }}-fluentd
 roleRef:
   kind: ClusterRole
-  name: {{ include "eck-stack.fullname" . }}-fluentd
+  name: {{ include "efk-stack.fullname" . }}-fluentd
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: ServiceAccount
-  name: {{ include "eck-stack.fullname" . }}-fluentd
+  name: {{ include "efk-stack.fullname" . }}-fluentd
   namespace: logging
