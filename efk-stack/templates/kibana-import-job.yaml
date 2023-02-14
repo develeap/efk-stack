@@ -1,36 +1,49 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "eck-stack.fullname" . }}-kibana-import
-  annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "5"
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  name: {{ include "efk-stack.fullname" . }}-kibana-import
 spec:
   backoffLimit: 0
+  ttlSecondsAfterFinished: 120
   template:
     spec:
       restartPolicy: Never
       volumes:
       - name: kibana-data
         configMap:
-            name: kibana-data
+            name: {{ include "efk-stack.fullname" . }}-kibana-data
             defaultMode: 0777
       containers:
-      - name: kibanax-import
-        image: couchbase/centos7-systemd
+      - name: kibana-import
+        image: alpine/curl
         imagePullPolicy: IfNotPresent
         env:
+        - name: ELASTICSEARCH_PROTOCOL
+          {{- if .Values.elasticsearch.http.tls.disabled }}
+          value: http
+          {{- else }}     
+          value: https      
+          {{- end }}
+        - name: ELASTICSEARCH_URL
+          value: {{ include "efk-stack.fullname" . }}-elasticsearch-es-master
+        - name: ELASTICSEARCH_PORT
+          value: "9200"
+        - name: KIBANA_PROTOCOL
+          {{- if .Values.kibana.http.tls.disabled }}
+          value: http
+          {{- else }}     
+          value: https      
+          {{- end }}
         - name: KIBANA_URL
-          value: {{ include "eck-stack.fullname" . }}-{{ .Values.kibana.apiService.name }}
+          value: {{ include "efk-stack.fullname" . }}-kibana-kb-http
         - name: KIBANA_PORT
-          value: "{{ .Values.kibana.apiService.port }}"
+          value: "{{ .Values.kibana.service.port }}"
         - name: ELASTIC_USER
-          value: {{ .Values.kibana.secret.user}}
+          value: "elastic"
         - name: ELASTIC_PWD
           valueFrom:
             secretKeyRef:
-              name: {{ include "eck-stack.fullname" . }}-{{ .Values.kibana.secret.name }}
+              name: {{ include "efk-stack.fullname" . }}-elasticsearch-es-elastic-user
               key: elastic
         command: ["/bin/sh","/kibana/curl-script.sh"]
         volumeMounts:

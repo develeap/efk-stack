@@ -1,16 +1,21 @@
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
-  name: {{ include "eck-stack.fullname" . }}-{{ .Values.elasticsearch.service.name }}
+  name: {{ include "efk-stack.fullname" . }}-elasticsearch
+  annotations:
+    eck.k8s.elastic.co/license: basic
 spec:
-  version: {{ .Values.elasticsearch.version }}
+  version: {{ default "8.5.0" .Values.elasticsearch.version }}
   nodeSets:
   - name: master
     config:
       # most Elasticsearch configuration parameters are possible to set, e.g: node.attr.attr_name: attr_value
       node.roles: ["master", "remote_cluster_client"]
       # this allows ES to run on nodes even if their vm.max_map_count has not been increased, at a performance cost
-      node.store.allow_mmap: true
+      {{- if .Values.elasticsearch.http.tls.disabled }}
+      xpack.security.transport.ssl.enabled: false
+      xpack.security.enabled: false
+      {{- end }}
     podTemplate:
       metadata:
         labels:
@@ -34,9 +39,14 @@ spec:
             storage: "{{ .Values.elasticsearch.master.volume.size }}"
         storageClassName: "{{ .Values.elasticsearch.master.volume.storageClass }}"
   - name: data
-    count: {{ .Values.elasticsearch.master.replicas }}
+    count: {{ .Values.elasticsearch.data.replicas }}
     config:
       node.roles: ["data", "ingest", "ml", "transform"]
+      {{- if .Values.elasticsearch.http.tls.disabled }}
+      xpack.security.transport.ssl.enabled: false
+      xpack.security.enabled: false
+      {{- end }}
+      # node.store.allow_mmap: false
     podTemplate:
       metadata:
         labels:
@@ -51,10 +61,12 @@ spec:
           requests:
             storage: "{{ .Values.elasticsearch.data.volume.size }}"
         storageClassName: "{{ .Values.elasticsearch.data.volume.storageClass }}"
+  {{- if .Values.elasticsearch.http.tls.disabled }}
   http:
     tls:
       selfSignedCertificate:
         disabled: true
+  {{- end }}
         # # add a list of SANs into the self-signed HTTP certificate
         # subjectAltNames:
         # - dns: "elasticsearch-logging-es-http.{{ .Release.Namespace }}.svc.cluster.local"

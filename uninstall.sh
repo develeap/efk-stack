@@ -26,6 +26,6 @@ if [[ -n $1 ]]; then
     tail -1 "$1"
 fi
 
-/usr/local/bin/helm delete eck-stack -n ${NAMESPACE}
-/usr/local/bin/helm delete elastic-operator -n ${NAMESPACE}
+/usr/bin/env helm delete efk-stack -n ${NAMESPACE}
+/usr/bin/env helm delete elastic-operator -n ${NAMESPACE}
 kubectl delete ns ${NAMESPACE}

@@ -1,4 +1,4 @@
-# Default values for eck-stack.
+# Default values for efk-stack.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,46 +7,41 @@ nameOverride: ""
 fullnameOverride: ""
 
 elasticsearch: 
-  version: 8.4.0
+  version: 8.5.0
   master:
     replicas: 1
     volume:
       storageClass: gp2
       size: 10Gi
   data:
-    replicas: 3
+    replicas: 1
     volume:
       storageClass: gp2
-      size: 100Gi
-  service:
-    name: elasticsearch
+      size: 10Gi
   resources:
     limits:
-      cpu: 2
-      memory: 4Gi
-  httpService:
-    name: elasticsearch-es-http
-    port: 9200
-    scheme: http
-    sslVerify: false
+      cpu: 300m
+      memory: 1Gi
+  http:
+    tls:
+      disabled: false
+  auth:
+    disabled: true
 
 kibana:
-  version: 8.4.0
+  ##need to be the same as elasticsearch so if commented it will be the elastic version
+  # version: 8.5.2
   service:
-    name: kibana
     type: NodePort
     port: 5601
     targetPort: 5601
-  apiService: 
-    name: kibana-kb-http
-    port: 5601
-  secret:
-      name: elasticsearch-es-elastic-user
-      user: elastic
-      pwd: 
+  http:
+    tls:
+      disabled: true
+  ## the default user is elastic
+  ## the default password is 1234
+  password: 
 
 fluentd:
-  service:
-    name: fluentd
   config:
     name: fluentdconfig
