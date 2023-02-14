@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ include "efk-stack.fullname" . }}-kibana-data
 data:
-  te: curl -s -o /dev/null -w "%{http_code}" http://www.example.org != "200"
   curl-script.sh: |
     #!/bin/sh
     
