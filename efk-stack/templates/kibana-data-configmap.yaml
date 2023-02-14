@@ -1,3 +1,4 @@
+{{- if .Values.kibana.dashboard }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -50,3 +51,4 @@ data:
     import_index
 
   index_pattern.ndjson: {{ .Values.kibana.dashboard | toYaml }}
+{{- end }}

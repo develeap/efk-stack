@@ -1,3 +1,4 @@
+{{- if .Values.kibana.dashboard }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -49,3 +50,4 @@ spec:
         volumeMounts:
         - name: kibana-data
           mountPath: /kibana/
+{{- end }}

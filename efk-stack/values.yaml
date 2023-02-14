@@ -41,8 +41,9 @@ kibana:
   ## the default user is elastic
   ## the default password is 1234
   password:
-  dashboard: |
-    {"attributes":{"fieldAttrs":"{}","fields":"[]","runtimeFieldMap":"{}","timeFieldName":"@timestamp","title":"logstash-*","typeMeta":"{}"},"coreMigrationVersion":"8.2.2","id":"683a2d10-08fb-11ed-8cae-2d280a9cf5cc","migrationVersion":{"index-pattern":"8.0.0"},"references":[],"type":"index-pattern","updated_at":"2022-07-21T13:45:39.686Z","version":"WzEwNDUsMV0="}
+  ## insert here the exported dashboard json file content for auto import 
+  # dashboard: |
+  #   {"attributes":{"fieldAttrs":"{}","fields":"[]","runtimeFieldMap":"{}","timeFieldName":"@timestamp","title":"logstash-*","typeMeta":"{}"},"coreMigrationVersion":"8.2.2","id":"683a2d10-08fb-11ed-8cae-2d280a9cf5cc","migrationVersion":{"index-pattern":"8.0.0"},"references":[],"type":"index-pattern","updated_at":"2022-07-21T13:45:39.686Z","version":"WzEwNDUsMV0="}
       
 
 fluentd:
