@@ -9,7 +9,7 @@ This project includes everything (we) needed in order to install the EFK stack o
  5. ECK — Elastic Cloud for Kubernetes (Operator)
  6. Built-in imported data-view & dashboards (details on the following [article](https://medium.com/develeap/auto-load-objects-to-kibana-elasticsearch-stack-2nd-edition-d5a4fe75bd40))
 
-More details on the following [article](https://medium.com/@giladneiger/eck-stack-efk-one-click-installation-e5cabe430b5c)
+You can find more general details about the project on the following [article](https://medium.com/@giladneiger/eck-stack-efk-one-click-installation-e5cabe430b5c)
 
 #
 ## Requirements:
