@@ -1,13 +1,13 @@
 # EFK stack Helm Chart
 
 ## Intro
- 1. This project includes everything (we) needed in order to install the EFK stack on our Kubernetes cluster:
- 2. Elasticsearch
- 3. Kibana
- 4. Fluentd
- 5. Java multi-line log correct filtering (fluentd)
- 6. ECK — Elastic Cloud for Kubernetes (Operator)
- 7. Built-in imported data-view & dashboards (details on the following [article](https://medium.com/develeap/auto-load-objects-to-kibana-elasticsearch-stack-2nd-edition-d5a4fe75bd40))
+This project includes everything (we) needed in order to install the EFK stack on our Kubernetes cluster:
+ 1. Elasticsearch
+ 2. Kibana
+ 3. Fluentd
+ 4. Java multi-line log correct filtering (fluentd)
+ 5. ECK — Elastic Cloud for Kubernetes (Operator)
+ 6. Built-in imported data-view & dashboards (details on the following [article](https://medium.com/develeap/auto-load-objects-to-kibana-elasticsearch-stack-2nd-edition-d5a4fe75bd40))
 
 More details on the following [article](https://medium.com/@giladneiger/eck-stack-efk-one-click-installation-e5cabe430b5c)
 
