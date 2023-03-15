@@ -32,4 +32,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ include "efk-stack.fullname" . }}-fluentd
-  namespace: logging
+  namespace: {{ .Release.Namespace }}
