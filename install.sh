@@ -36,8 +36,8 @@ if [ -z "${NAMESPACE}" ] || [ -z "${KIBANA_PWD}" ]; then
     exit 1
 fi
 
-/usr/bin/env helm repo add elastic https://helm.elastic.co
-/usr/bin/env helm repo update
+helm repo add elastic https://helm.elastic.co
+helm repo update
 kubectl create ns ${NAMESPACE}
-/usr/bin/env helm upgrade --install elastic-operator elastic/eck-operator -n ${NAMESPACE}
-/usr/bin/env helm upgrade --install efk-stack efk-stack/ -n ${NAMESPACE} --set kibana.password=${KIBANA_PWD}
+helm upgrade --install elastic-operator elastic/eck-operator -n ${NAMESPACE}
+helm upgrade --install efk-stack efk-stack/ -n ${NAMESPACE} --set kibana.password=${KIBANA_PWD}
