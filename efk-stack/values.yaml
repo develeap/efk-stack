@@ -11,12 +11,12 @@ elasticsearch:
   master:
     replicas: 1
     volume:
-      storageClass: default
+      storageClass: local-path
       size: 10Gi
   data:
     replicas: 1
     volume:
-      storageClass: default
+      storageClass: local-path
       size: 10Gi
   resources:
     limits:
