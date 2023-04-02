@@ -14,7 +14,7 @@ while [[ $# -gt 0 ]]; do
       shift # past value
       ;;
      -x|--extra-arg)
-      EXTRA_ARG="$2"
+      EXTRA_ARGS+=("$2")
       shift # past argument
       shift # past value
       ;;
