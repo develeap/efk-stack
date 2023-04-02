@@ -45,4 +45,8 @@ helm repo add elastic https://helm.elastic.co
 helm repo update
 kubectl create ns ${NAMESPACE}
 helm upgrade --install elastic-operator elastic/eck-operator -n ${NAMESPACE}
-helm upgrade --install efk-stack efk-stack/ -n ${NAMESPACE} --set kibana.password=${KIBANA_PWD} --set ${EXTRA_ARG}
+helm_cmd="helm upgrade --install efk-stack efk-stack/ -n ${NAMESPACE} --set kibana.password=${KIBANA_PWD}"
+for extra_arg in "${EXTRA_ARGS[@]}"; do
+  helm_cmd+=" --set ${extra_arg}"
+done
+eval "$helm_cmd"
