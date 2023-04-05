@@ -31,6 +31,10 @@ elasticsearch:
 kibana:
   ##need to be the same as elasticsearch so if commented it will be the elastic version
   # version: 8.5.2
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
   service:
     type: NodePort
     port: 5601

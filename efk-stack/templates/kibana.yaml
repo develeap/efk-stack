@@ -9,6 +9,14 @@ spec:
   count: 1
   elasticsearchRef:
     name: {{ include "efk-stack.fullname" . }}-elasticsearch
+  podTemplate:
+    spec:
+      containers:
+      - name: kibana
+        resources:
+          limits:
+            memory: "{{ .Values.kibana.resources.limits.memory }}"
+            cpu: "{{ .Values.kibana.resources.limits.cpu }}"
   http:
     service:
       spec:
