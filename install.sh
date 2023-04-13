@@ -51,8 +51,4 @@ for extra_arg in "${EXTRA_ARGS[@]}"; do
 done
 eval "$helm_cmd"
 
-if [ $? -eq 0 ]; then
-    exit 0 # success
-else
-    exit 1 # failure
-fi
+exit $?
