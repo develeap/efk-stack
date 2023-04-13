@@ -50,3 +50,5 @@ for extra_arg in "${EXTRA_ARGS[@]}"; do
   helm_cmd+=" --set ${extra_arg}"
 done
 eval "$helm_cmd"
+
+exit $?
